@@ -51,7 +51,7 @@ let poison2 = 0;
 let interval;
 let score = snake.length;
 let currentLevel = 0;
-let record = localStorage.getItem('snakeRecord') || 0;
+let record = localStorage.getItem("snakeRecord") || 0;
 recordEl.textContent = record;
 
 //function for rendering a snake
@@ -94,22 +94,28 @@ function moveSnake() {
   if (direction === "up") newHead = head - 17;
   if (direction === "down") newHead = head + 17;
 
-  //Passage through walls
-  if (newHead < 0) newHead = gameUnits.length + newHead;
-  if (newHead >= gameUnits.length) newHead = newHead - gameUnits.length;
-  if (newHead % 17 === 0 && direction === "right") newHead -= 17;
-  if (head % 17 === 0 && direction === "left") newHead += 17;
+  //ban on passing through walls
+  if (
+    (direction === "right" && head % 17 === 16) ||
+    (direction === "left" && head % 17 === 0) ||
+    (direction === "up" && newHead < 0) ||
+    (direction === "down" && newHead >= 289)
+  ) {
+    fail();
+    endGame();
+    return;
+  }
 
   if (snake.includes(newHead)) {
     fail();
-    endGame()
+    endGame();
 
     return;
   }
 
   if (snake.length === 0) {
     fail();
-    endGame()
+    endGame();
     return;
   }
   snake.unshift(newHead);
@@ -156,17 +162,17 @@ function moveSnake() {
 }
 
 function endGame() {
-    clearInterval(interval);
-    if (snake.length > record) {
-      record = snake.length;
-      localStorage.setItem('snakeRecord', record); 
-      recordEl.textContent = record; 
-      alert("Поздравляем! Вы побили свой рекорд!");
-    }
-  
-    gameMenu.classList.toggle("hidden"); 
-    startBtn.textContent = 'restart game'
+  clearInterval(interval);
+  if (snake.length > record) {
+    record = snake.length;
+    localStorage.setItem("snakeRecord", record);
+    recordEl.textContent = record;
+    alert("Поздравляем! Вы побили свой рекорд!");
   }
+
+  gameMenu.classList.toggle("hidden");
+  startBtn.textContent = "restart game";
+}
 
 document.addEventListener("keydown", (e) => {
   if ((e.key === "ArrowRight" || e.key === "d") && direction !== "left")
