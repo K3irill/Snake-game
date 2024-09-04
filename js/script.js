@@ -27,19 +27,15 @@ function createFood() {
 
 //creating poison
 function createPoison() {
-  gameUnits.forEach((unit) => unit.classList.remove(poisonClass)); // Удалить старую еду
-
-  // Генерация первой еды
+  gameUnits.forEach((unit) => unit.classList.remove(poisonClass)); 
   do {
     poison1 = Math.floor(Math.random() * gameUnits.length);
-  } while (snake.includes(poison1) || poison1 === poison2); // Убедиться, что еда не появляется на змейке или на месте другого яблока
+  } while (snake.includes(poison1) || poison1 === poison2); 
 
-  // Генерация второй еды
   do {
     poison2 = Math.floor(Math.random() * gameUnits.length);
-  } while (snake.includes(poison2) || poison1 === poison2); // Убедиться, что еда не появляется на змейке или на месте первого яблока
+  } while (snake.includes(poison2) || poison1 === poison2); 
 
-  // Отобразить еду
   gameUnits[poison1].classList.add(poisonClass);
   gameUnits[poison2].classList.add(poisonClass);
 }
