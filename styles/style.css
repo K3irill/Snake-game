@@ -122,9 +122,10 @@ h6 {
   padding: 15px 5px 0px 5px;
 }
 .game__info_text {
-  font-size: 24px;
+  font-size: 20px;
   text-transform: uppercase;
   font-weight: bold;
+  width: 180px;
 }
 .game__menu {
   width: 200px;

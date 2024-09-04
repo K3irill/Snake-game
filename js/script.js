@@ -1,11 +1,22 @@
 const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
 const scoreEl = document.querySelector("#score span");
+const levelEl = document.querySelector("#level span");
 const gameMenu = document.querySelector(".game__menu");
 const startBtn = document.querySelector(".game__menu_start");
 const snakeClass = "snake";
 const poisonClass = "poison";
 const foodClass = "food";
+
+const levels = [
+  "beginner",
+  "favorite",
+  "fighter",
+  "warrior",
+  "hero",
+  "legend",
+  "Lord",
+];
 
 let snake = [76];
 let direction = "right";
@@ -87,6 +98,22 @@ function moveSnake() {
     createPoison();
     snake.pop();
     scoreEl.textContent = snake.length;
+  }
+
+  if (snake.length < 10) {
+    levelEl.textContent = levels[0];
+  } else if (snake.length < 20) {
+    levelEl.textContent = levels[1];
+  } else if (snake.length < 30) {
+    levelEl.textContent = levels[2];
+  } else if (snake.length < 40) {
+    levelEl.textContent = levels[3];
+  } else if (snake.length < 60) {
+    levelEl.textContent = levels[4];
+  } else if (snake.length < 80) {
+    levelEl.textContent = levels[5];
+  } else if (snake.length < 100) {
+    levelEl.textContent = levels[6];
   }
 
   renderSnake();
