@@ -2,6 +2,7 @@ const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
 const scoreEl = document.querySelector("#score span");
 const levelEl = document.querySelector("#level span");
+const recordEl = document.querySelector("#record span");
 const gameMenu = document.querySelector(".game__menu");
 const startBtn = document.querySelector(".game__menu_start");
 const music = document.getElementById("music");
@@ -50,6 +51,8 @@ let poison2 = 0;
 let interval;
 let score = snake.length;
 let currentLevel = 0;
+let record = localStorage.getItem('snakeRecord') || 0;
+recordEl.textContent = record;
 
 //function for rendering a snake
 function renderSnake() {
@@ -99,18 +102,14 @@ function moveSnake() {
 
   if (snake.includes(newHead)) {
     fail();
-    clearInterval(interval);
-    // alert("Игра окончена: Вы врезались в себя!");
-    gameMenu.classList.toggle("hidden");
+    endGame()
 
     return;
   }
 
   if (snake.length === 0) {
     fail();
-    clearInterval(interval);
-    // alert("Игра окончена: Вы отравились");
-    gameMenu.classList.toggle("hidden");
+    endGame()
     return;
   }
   snake.unshift(newHead);
@@ -156,6 +155,19 @@ function moveSnake() {
   renderSnake();
 }
 
+function endGame() {
+    clearInterval(interval);
+    if (snake.length > record) {
+      record = snake.length;
+      localStorage.setItem('snakeRecord', record); 
+      recordEl.textContent = record; 
+      alert("Поздравляем! Вы побили свой рекорд!");
+    }
+  
+    gameMenu.classList.toggle("hidden"); 
+    startBtn.textContent = 'restart game'
+  }
+
 document.addEventListener("keydown", (e) => {
   if ((e.key === "ArrowRight" || e.key === "d") && direction !== "left")
     direction = "right";
@@ -185,6 +197,7 @@ function startGame() {
 }
 
 startBtn.addEventListener("click", startGame);
+
 musicBtn.addEventListener("click", () =>
   music.muted != true
     ? ((music.muted = true), (musicBtnImg.src = ArrmusicImg[1]))

@@ -145,15 +145,16 @@ h6 {
   left: 32.5%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   background-color: rgb(135, 175, 139);
   z-index: 1000;
 }
-.game__menu_start {
+.game__menu_btn {
   text-transform: uppercase;
   cursor: pointer;
 }
-.game__menu_start:hover {
+.game__menu_btn:hover {
   text-shadow: 1px 1px 4px #000;
 }
 
