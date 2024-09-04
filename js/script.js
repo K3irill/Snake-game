@@ -1,11 +1,13 @@
 const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
 const snakeClass = "snake";
+const poisonClass = "poison";
 
 let snake = [76];
 let direction = "right";
 let food = 0;
-let poison = 0;
+let poison1 = 0;
+let poison2 = 0;
 let interval;
 
 //function for rendering a snake
@@ -25,11 +27,21 @@ function createFood() {
 
 //creating poison
 function createPoison() {
-  gameUnits[poison].style.backgroundColor = "";
+  gameUnits.forEach((unit) => unit.classList.remove(poisonClass)); // Удалить старую еду
+
+  // Генерация первой еды
   do {
-    poison = Math.floor(Math.random() * gameUnits.length);
-  } while (snake.includes(poison));
-  gameUnits[poison].style.backgroundColor = "black";
+    poison1 = Math.floor(Math.random() * gameUnits.length);
+  } while (snake.includes(poison1) || poison1 === poison2); // Убедиться, что еда не появляется на змейке или на месте другого яблока
+
+  // Генерация второй еды
+  do {
+    poison2 = Math.floor(Math.random() * gameUnits.length);
+  } while (snake.includes(poison2) || poison1 === poison2); // Убедиться, что еда не появляется на змейке или на месте первого яблока
+
+  // Отобразить еду
+  gameUnits[poison1].classList.add(poisonClass);
+  gameUnits[poison2].classList.add(poisonClass);
 }
 
 //logic function for moving the snake
@@ -42,7 +54,7 @@ function moveSnake() {
   if (direction === "up") newHead = head - 17;
   if (direction === "down") newHead = head + 17;
 
-//Passage through walls
+  //Passage through walls
   if (newHead < 0) newHead = gameUnits.length + newHead;
   if (newHead >= gameUnits.length) newHead = newHead - gameUnits.length;
   if (newHead % 17 === 0 && direction === "right") newHead -= 17;
@@ -61,23 +73,21 @@ function moveSnake() {
   }
   snake.unshift(newHead);
 
-//   the condition if you ate the food
+  //   the condition if you ate the food
   if (newHead === food) {
     createFood();
   } else {
     snake.pop();
   }
 
-
-//   the condition if you ate the food
-  if (newHead === poison) {
+  //   the condition if you ate the food
+  if (newHead === poison1 || newHead === poison2) {
     createPoison();
     snake.pop();
   }
 
   renderSnake();
 }
-
 
 document.addEventListener("keydown", (e) => {
   if ((e.key === "ArrowRight" || e.key === "d") && direction !== "left")
@@ -90,11 +100,10 @@ document.addEventListener("keydown", (e) => {
     direction = "down";
 });
 
-
 function startGame() {
   createPoison();
   createFood();
-  interval = setInterval(moveSnake, 300); 
+  interval = setInterval(moveSnake, 300);
 }
 
-startGame(); 
+startGame();
