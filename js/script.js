@@ -4,19 +4,35 @@ const scoreEl = document.querySelector("#score span");
 const levelEl = document.querySelector("#level span");
 const gameMenu = document.querySelector(".game__menu");
 const startBtn = document.querySelector(".game__menu_start");
+const music = document.getElementById("music");
 const snakeClass = "snake";
 const poisonClass = "poison";
 const foodClass = "food";
 
-const levels = [
-  "beginner",
-  "favorite",
-  "fighter",
-  "warrior",
-  "hero",
-  "legend",
-  "Lord",
-];
+class classLevel {
+  constructor(levelTitle, musicUrl) {
+    (this._levelTitle = levelTitle), (this._musicUrl = musicUrl);
+  }
+  get levelTitle() {
+    return this._levelTitle;
+  }
+  get musicUrl() {
+    return this._musicUrl;
+  }
+}
+
+const levels = new classLevel(
+  ["beginner", "favorite", "fighter", "warrior", "hero", "legend", "Lord"],
+  [
+    "/assets/music/level-1.mp3",
+    "/assets/music/level-2.mp3",
+    "/assets/music/level-3.mp3",
+    "/assets/music/level-4.mp3",
+    "/assets/music/level-5.mp3",
+    "/assets/music/level-final.mp3",
+  ]
+);
+console.log(levels._musicUrl[0]);
 
 let snake = [76];
 let direction = "right";
@@ -25,6 +41,7 @@ let poison1 = 0;
 let poison2 = 0;
 let interval;
 let score = snake.length;
+let currentLevel = 0;
 
 //function for rendering a snake
 function renderSnake() {
@@ -73,15 +90,18 @@ function moveSnake() {
   if (head % 17 === 0 && direction === "left") newHead += 17;
 
   if (snake.includes(newHead)) {
+    fail();
     clearInterval(interval);
-    alert("Игра окончена: Вы врезались в себя!");
+    // alert("Игра окончена: Вы врезались в себя!");
     gameMenu.classList.toggle("hidden");
+
     return;
   }
 
   if (snake.length === 0) {
+    fail();
     clearInterval(interval);
-    alert("Игра окончена: Вы отравились");
+    // alert("Игра окончена: Вы отравились");
     gameMenu.classList.toggle("hidden");
     return;
   }
@@ -100,20 +120,30 @@ function moveSnake() {
     scoreEl.textContent = snake.length;
   }
 
+  let newLevel;
   if (snake.length < 10) {
-    levelEl.textContent = levels[0];
+    newLevel = 1;
   } else if (snake.length < 20) {
-    levelEl.textContent = levels[1];
+    newLevel = 2;
   } else if (snake.length < 30) {
-    levelEl.textContent = levels[2];
+    newLevel = 3;
   } else if (snake.length < 40) {
-    levelEl.textContent = levels[3];
+    newLevel = 4;
   } else if (snake.length < 60) {
-    levelEl.textContent = levels[4];
+    newLevel = 5;
   } else if (snake.length < 80) {
-    levelEl.textContent = levels[5];
+    newLevel = 6;
   } else if (snake.length < 100) {
-    levelEl.textContent = levels[6];
+    newLevel = 7;
+  }
+  console.log(newLevel);
+
+  if (newLevel !== currentLevel) {
+    currentLevel = newLevel;
+    levelEl.textContent = levels._levelTitle[currentLevel - 1];
+    music.src = levels._musicUrl[currentLevel - 1];
+    music.play();
+  } else {
   }
 
   renderSnake();
@@ -134,6 +164,7 @@ function resetGame() {
   snake = [76];
   direction = "right";
   scoreEl.textContent = snake.length;
+  currentLevel = 0;
   clearInterval(interval);
 }
 
@@ -147,3 +178,9 @@ function startGame() {
 }
 
 startBtn.addEventListener("click", startGame);
+
+function fail() {
+  music.src = "/assets/music/fail.mp3";
+  music.play();
+  music.removeAttribute("loop");
+}
