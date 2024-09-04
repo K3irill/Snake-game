@@ -87,4 +87,31 @@ h6 {
   font-weight: 400;
 }
 
-/*  *//*# sourceMappingURL=style.css.map */
+/*  */
+.wrapper {
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(127, 255, 212, 0.336);
+}
+
+.game {
+  border: 3px solid #7a026a;
+}
+.game__list {
+  display: grid;
+  grid-template: 1fr/repeat(17, 30px);
+}
+.game__unit {
+  border: 1px solid #456f88;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.281);
+}
+
+.snake {
+  background-color: greenyellow;
+}/*# sourceMappingURL=style.css.map */
