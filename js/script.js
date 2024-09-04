@@ -1,8 +1,9 @@
 const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
+const scoreEl = document.querySelector("#score span");
 const snakeClass = "snake";
 const poisonClass = "poison";
-const foodClass = 'food';
+const foodClass = "food";
 
 let snake = [76];
 let direction = "right";
@@ -10,8 +11,7 @@ let food = 0;
 let poison1 = 0;
 let poison2 = 0;
 let interval;
-
-
+let score = snake.length;
 
 //function for rendering a snake
 function renderSnake() {
@@ -21,23 +21,23 @@ function renderSnake() {
 
 //creating foods
 function createFood() {
-  gameUnits[food].classList.remove(foodClass)
+  gameUnits[food].classList.remove(foodClass);
   do {
     food = Math.floor(Math.random() * gameUnits.length);
   } while (snake.includes(food));
-  gameUnits[food].classList.add(foodClass)
+  gameUnits[food].classList.add(foodClass);
 }
 
 //creating poison
 function createPoison() {
-  gameUnits.forEach((unit) => unit.classList.remove(poisonClass)); 
+  gameUnits.forEach((unit) => unit.classList.remove(poisonClass));
   do {
     poison1 = Math.floor(Math.random() * gameUnits.length);
-  } while (snake.includes(poison1) || poison1 === poison2); 
+  } while (snake.includes(poison1) || poison1 === poison2);
 
   do {
     poison2 = Math.floor(Math.random() * gameUnits.length);
-  } while (snake.includes(poison2) || poison1 === poison2); 
+  } while (snake.includes(poison2) || poison1 === poison2);
 
   gameUnits[poison1].classList.add(poisonClass);
   gameUnits[poison2].classList.add(poisonClass);
@@ -75,6 +75,7 @@ function moveSnake() {
   //   the condition if you ate the food
   if (newHead === food) {
     createFood();
+    scoreEl.textContent = snake.length;
   } else {
     snake.pop();
   }
@@ -83,6 +84,7 @@ function moveSnake() {
   if (newHead === poison1 || newHead === poison2) {
     createPoison();
     snake.pop();
+    scoreEl.textContent = snake.length;
   }
 
   renderSnake();
@@ -100,6 +102,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 function startGame() {
+  scoreEl.textContent = snake.length;
   createPoison();
   createFood();
   interval = setInterval(moveSnake, 300);
