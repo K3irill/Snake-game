@@ -25,7 +25,7 @@ class Snake {
     this.direction = "right";
     this.score = this.snake.length;
   }
-
+//logic function for moving the snake
   moveSnake(gameUnits, poison, food) {
     let head = this.snake[0];
     let newHead;
@@ -45,7 +45,7 @@ class Snake {
         break;
     }
 
-    // Прохождение через стены
+  //Passage through walls
     if (newHead < 0) newHead = gameUnits.length + newHead;
     if (newHead >= gameUnits.length) newHead = newHead - gameUnits.length;
     if (newHead % 17 === 0 && this.direction === "right") newHead -= 17;
@@ -56,13 +56,13 @@ class Snake {
     }
 
     this.snake.unshift(newHead);
-
+  //   the condition if you ate the food
     if (newHead === food) {
       return "food";
     } else {
       this.snake.pop();
     }
-
+//   the condition if you ate the poison
     if (newHead === poison[0] || newHead === poison[1]) {
       this.snake.pop();
       return "poison";
@@ -71,6 +71,7 @@ class Snake {
     return true;
   }
 
+//function for rendering a snake
   renderSnake(gameUnits, snakeClass) {
     gameUnits.forEach((unit) => unit.classList.remove(snakeClass));
     this.snake.forEach((index) => gameUnits[index].classList.add(snakeClass));
@@ -152,7 +153,7 @@ class Game {
 
     this.musicBtn.addEventListener("click", () => this.toggleMusic());
   }
-
+//creating foods
   createFood() {
     this.gameUnits[this.food].classList.remove("food");
     do {
@@ -160,7 +161,7 @@ class Game {
     } while (this.snake.snake.includes(this.food));
     this.gameUnits[this.food].classList.add("food");
   }
-
+//creating poison
   createPoison() {
     this.gameUnits.forEach((unit) => unit.classList.remove("poison"));
     do {
@@ -271,5 +272,5 @@ class Game {
     }
   }
 }
-// Запуск игры
+
 const game = new Game();
