@@ -1,6 +1,8 @@
 const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
 const scoreEl = document.querySelector("#score span");
+const gameMenu = document.querySelector(".game__menu");
+const startBtn = document.querySelector(".game__menu_start");
 const snakeClass = "snake";
 const poisonClass = "poison";
 const foodClass = "food";
@@ -62,16 +64,17 @@ function moveSnake() {
   if (snake.includes(newHead)) {
     clearInterval(interval);
     alert("Игра окончена: Вы врезались в себя!");
+    gameMenu.classList.toggle("hidden");
     return;
   }
 
   if (snake.length === 0) {
     clearInterval(interval);
     alert("Игра окончена: Вы отравились");
+    gameMenu.classList.toggle("hidden");
     return;
   }
   snake.unshift(newHead);
-
   //   the condition if you ate the food
   if (newHead === food) {
     createFood();
@@ -79,8 +82,7 @@ function moveSnake() {
   } else {
     snake.pop();
   }
-
-  //   the condition if you ate the food
+  //   the condition if you ate the poison
   if (newHead === poison1 || newHead === poison2) {
     createPoison();
     snake.pop();
@@ -101,11 +103,20 @@ document.addEventListener("keydown", (e) => {
     direction = "down";
 });
 
-function startGame() {
+function resetGame() {
+  snake = [76];
+  direction = "right";
   scoreEl.textContent = snake.length;
+  clearInterval(interval);
+}
+
+function startGame() {
+  resetGame();
+  gameMenu.classList.toggle("hidden");
+
   createPoison();
   createFood();
   interval = setInterval(moveSnake, 300);
 }
 
-startGame();
+startBtn.addEventListener("click", startGame);

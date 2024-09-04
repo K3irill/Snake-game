@@ -105,6 +105,7 @@ h6 {
   border-radius: 10px;
   background-color: rgb(173, 212, 177);
   padding: 15px;
+  position: relative;
 }
 .game__list {
   display: grid;
@@ -124,6 +125,26 @@ h6 {
   font-size: 24px;
   text-transform: uppercase;
   font-weight: bold;
+}
+.game__menu {
+  width: 200px;
+  height: 100px;
+  border: 1px dotted #000;
+  position: absolute;
+  top: 35%;
+  left: 32.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(135, 175, 139);
+  z-index: 1000;
+}
+.game__menu_start {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.game__menu_start:hover {
+  text-shadow: 1px 1px 4px #000;
 }
 
 .snake {
@@ -149,4 +170,8 @@ h6 {
 .food {
   background: url(/assets/svg/apple-svgrepo-com.svg) center no-repeat;
   background-size: cover;
+}
+
+.hidden {
+  display: none;
 }/*# sourceMappingURL=style.css.map */
