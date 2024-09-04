@@ -2,6 +2,7 @@ const gameField = document.querySelector(".game__list");
 const gameUnits = document.querySelectorAll(".game__unit");
 const snakeClass = "snake";
 const poisonClass = "poison";
+const foodClass = 'food';
 
 let snake = [76];
 let direction = "right";
@@ -20,11 +21,11 @@ function renderSnake() {
 
 //creating foods
 function createFood() {
-  gameUnits[food].style.backgroundColor = "";
+  gameUnits[food].classList.remove(foodClass)
   do {
     food = Math.floor(Math.random() * gameUnits.length);
   } while (snake.includes(food));
-  gameUnits[food].style.backgroundColor = "red";
+  gameUnits[food].classList.add(foodClass)
 }
 
 //creating poison

@@ -65,5 +65,11 @@
     }
 }
 .poison{
-    background-color: black;
+    background:  url(/assets/svg/poison-svgrepo-com.svg) center no-repeat;
+    background-size: cover;
+    
+}
+.food{
+    background:  url(/assets/svg/apple-svgrepo-com.svg) center no-repeat;
+    background-size: cover;
 }
