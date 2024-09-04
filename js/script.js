@@ -10,6 +10,8 @@ let poison1 = 0;
 let poison2 = 0;
 let interval;
 
+
+
 //function for rendering a snake
 function renderSnake() {
   gameUnits.forEach((unit) => unit.classList.remove(snakeClass));
