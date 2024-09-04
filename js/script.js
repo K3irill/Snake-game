@@ -5,6 +5,14 @@ const levelEl = document.querySelector("#level span");
 const gameMenu = document.querySelector(".game__menu");
 const startBtn = document.querySelector(".game__menu_start");
 const music = document.getElementById("music");
+const musicBtn = document.getElementById("btn-music");
+const musicBtnImg = document.querySelector("#btn-music img");
+const ArrmusicImg = [
+  "assets/svg/volume-loud-svgrepo-com.svg",
+  "assets/svg/volume-svgrepo-com.svg",
+];
+console.log(musicBtnImg);
+
 const snakeClass = "snake";
 const poisonClass = "poison";
 const foodClass = "food";
@@ -136,7 +144,6 @@ function moveSnake() {
   } else if (snake.length < 100) {
     newLevel = 7;
   }
-  console.log(newLevel);
 
   if (newLevel !== currentLevel) {
     currentLevel = newLevel;
@@ -178,6 +185,11 @@ function startGame() {
 }
 
 startBtn.addEventListener("click", startGame);
+musicBtn.addEventListener("click", () =>
+  music.muted != true
+    ? ((music.muted = true), (musicBtnImg.src = ArrmusicImg[1]))
+    : ((music.muted = false), (musicBtnImg.src = ArrmusicImg[0]))
+);
 
 function fail() {
   music.src = "/assets/music/fail.mp3";
