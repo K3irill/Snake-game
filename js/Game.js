@@ -1,95 +1,7 @@
-class Level {
-  constructor(levelTitles, musicUrls) {
-    this._levelTitles = levelTitles;
-    this._musicUrls = musicUrls;
-  }
+import { Level } from "./Level.js";
+import { Snake } from "./Snake.js";
 
-  getLevelTitle(level) {
-    return this._levelTitles[level];
-  }
-
-  getMusicUrl(level) {
-    return this._musicUrls[level];
-  }
-}
-
-class Snake {
-  constructor() {
-    this.snake = [76];
-    this.direction = "right";
-    this.score = this.snake.length;
-  }
-
-  reset() {
-    this.snake = [76];
-    this.direction = "right";
-    this.score = this.snake.length;
-  }
-//logic function for moving the snake
-  moveSnake(gameUnits, poison, food) {
-    let head = this.snake[0];
-    let newHead;
-
-    switch (this.direction) {
-      case "right":
-        newHead = head + 1;
-        break;
-      case "left":
-        newHead = head - 1;
-        break;
-      case "up":
-        newHead = head - 17;
-        break;
-      case "down":
-        newHead = head + 17;
-        break;
-    }
-
-  //Passage through walls
-    if (newHead < 0) newHead = gameUnits.length + newHead;
-    if (newHead >= gameUnits.length) newHead = newHead - gameUnits.length;
-    if (newHead % 17 === 0 && this.direction === "right") newHead -= 17;
-    if (head % 17 === 0 && this.direction === "left") newHead += 17;
-
-    if (this.snake.includes(newHead) || this.snake.length == 0) {
-      return false;
-    }
-
-    this.snake.unshift(newHead);
-  //   the condition if you ate the food
-    if (newHead === food) {
-      return "food";
-    } else {
-      this.snake.pop();
-    }
-//   the condition if you ate the poison
-    if (newHead === poison[0] || newHead === poison[1]) {
-      this.snake.pop();
-      return "poison";
-    }
-
-    return true;
-  }
-
-//function for rendering a snake
-  renderSnake(gameUnits, snakeClass) {
-    gameUnits.forEach((unit) => unit.classList.remove(snakeClass));
-    this.snake.forEach((index) => gameUnits[index].classList.add(snakeClass));
-  }
-
-  changeDirection(newDirection) {
-    if (
-      (newDirection === "right" && this.direction !== "left") ||
-      (newDirection === "left" && this.direction !== "right") ||
-      (newDirection === "up" && this.direction !== "down") ||
-      (newDirection === "down" && this.direction !== "up")
-    ) {
-      this.direction = newDirection;
-    }
-  }
-}
-
-class Game {
+export class Game {
   constructor() {
     this.levels = new Level(
       ["beginner", "favorite", "fighter", "warrior", "hero", "legend", "Lord"],
@@ -150,10 +62,9 @@ class Game {
     });
 
     this.startBtn.addEventListener("click", () => this.startGame());
-
     this.musicBtn.addEventListener("click", () => this.toggleMusic());
   }
-//creating foods
+
   createFood() {
     this.gameUnits[this.food].classList.remove("food");
     do {
@@ -161,7 +72,7 @@ class Game {
     } while (this.snake.snake.includes(this.food));
     this.gameUnits[this.food].classList.add("food");
   }
-//creating poison
+
   createPoison() {
     this.gameUnits.forEach((unit) => unit.classList.remove("poison"));
     do {
@@ -183,11 +94,9 @@ class Game {
     this.snake.reset();
     this.scoreEl.textContent = this.snake.score;
     this.levelEl.textContent = this.levels.getLevelTitle(0);
-
     this.createPoison();
     this.createFood();
     this.gameMenu.classList.toggle("hidden");
-
     this.interval = setInterval(() => this.gameLoop(), 300);
   }
 
@@ -253,15 +162,16 @@ class Game {
       this.recordEl.textContent = this.record;
       alert("Поздравляем! Вы побили свой рекорд!");
     }
-
     this.gameMenu.classList.toggle("hidden");
     this.startBtn.textContent = "Restart Game";
   }
+
   fail() {
     this.music.src = "/assets/music/fail.mp3";
     this.music.play();
     this.music.removeAttribute("loop");
   }
+
   toggleMusic() {
     if (this.music.muted) {
       this.music.muted = false;
@@ -272,5 +182,3 @@ class Game {
     }
   }
 }
-
-const game = new Game();
